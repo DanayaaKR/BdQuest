@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kari</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0b0b0f;
+            color: #eeeeee;
+            font-family: Arial, sans-serif;
+            padding: 30px 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            color: #777780;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .number {
+            color: #a970ff;
+        }
+
+        /* MAIN CARD */
+
+        .card {
+            background: #111116;
+            border: 1px solid #24242c;
+            border-radius: 18px;
+            padding: 45px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        h1 {
+            margin: 0 0 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .text {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+            line-height: 1.9;
+            color: #d4d4d8;
+        }
+
+        .text p {
+            margin: 0 0 25px;
+        }
+
+        /* HINT */
+
+        .hint-area {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hint {
+            display: none;
+            font-size: 13px;
+            color: #aaaab5;
+            background: #17171e;
+            border: 1px solid #292933;
+            border-radius: 10px;
+            padding: 10px 14px;
+        }
+
+        .hint.show {
+            display: block;
+        }
+
+        .hint-button {
+            background: transparent;
+            border: 1px solid #35353f;
+            color: #858590;
+            padding: 9px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .hint-button:hover {
+            border-color: #a970ff;
+            color: #a970ff;
+            transform: translateY(-1px);
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #3f3f48;
+            font-size: 11px;
+        }
+        /* ANSWER AREA */
+
+.answer-area {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.answer-input {
+    width: 100%;
+    background: #0b0b0f;
+    border: 1px solid #35353f;
+    color: #eeeeee;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.answer-input:focus {
+    border-color: #a970ff;
+    box-shadow: 0 0 0 2px rgba(169, 112, 255, 0.1);
+}
+
+.answer-button {
+    background: #a970ff;
+    border: none;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.answer-button:hover {
+    background: #9558ed;
+    transform: translateY(-1px);
+}
+
+.error {
+    display: none;
+    color: #ff7070;
+    font-size: 13px;
+}
+
+.error.show {
+    display: block;
+}
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 28px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .text {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="page">
+
+        <div class="topbar">
+
+            <span class="number">
+                
+            </span>
+
+            <span>
+                
+            </span>
+
+        </div>
+
+
+        <section class="card">
+
+            <h1></h1>
+
+
+            <div class="text">
+
+                <p>
+                    Last weekend, I decided to spend a quiet afternoon at home.
+                    The weather was beautifull, so I opened the window and made some coffee.
+                    I wanted to finish a book I had started a few days earlier, but I kept
+                    getting distracted by my phone.
+                </p>
+
+                <p>
+                    After about an hour, I finally put my phone away and went back to reading.
+                    The story was very diffrent from what I expected, and I couldn't stop reading.
+                    I was so interested that I forgot to eat lunch.
+                </p>
+
+                <p>
+                    In the afternoon, my freind sent me a message asking if I wanted to go for
+                    a walk. I told her I would be ready in twenty minutes, but I had to change
+                    my clothes first. I always leave everything until the last minite.
+                </p>
+
+                <p>
+                    Before leaving, I checked the weather again because I didn't want to get
+                    caught in the rain. The forecast said it would be sunny, but I didn't
+                    completly trust it. I grabbed an umbrella anyway and left the house.
+                </p>
+
+                <p>
+                    On the way to the park, we stopped at a small bakery. I wanted to buy a
+                    sandwich, but they had already sold out. We decided to get something sweet
+                    instead. The chocolate cake looked delicous, so we bought a slice and shared it.
+                </p>
+
+                <p>
+                    We spent the next hour talking about school, holidays, games, and everything
+                    else we could think of. It was a simple afternoon, but somehow it became one
+                    of the most memorible days of the month.
+                </p>
+
+                <p>
+                    When I got home, I realized I had left my umbrella at the park.
+                    I didn't want to go back, so I decided to look for it tomorow.
+                    I wrote a note to remind myself, because I knew I would forget.
+                </p>
+
+                <p>
+                    Before going to bed, I read a few more pages. The ending was surprizing,
+                    and I immediately wanted to start another book.
+                    I was exausted by then, so I turned off the light and went to sleep.
+                </p>
+
+            </div>
+
+
+            <!-- HINTS -->
+
+            <div class="hint-area">
+
+                <div id="hint1" class="hint">
+                    Има грешки в текста.
+                </div>
+
+                <div id="hint2" class="hint">
+                    Въведи пропуснатите букви в полето(всичко с малка буква)
+                </div>
+
+                <button
+                    id="hintButton"
+                    class="hint-button"
+                    onclick="useHint()">
+                    💡 Hint
+                </button>
+
+            </div>
+
+        </section>
+        <!-- ANSWER -->
+
+<div class="answer-area">
+
+    <input
+        type="text"
+        id="answerInput"
+        class="answer-input"
+        placeholder="Въведи отговора..."
+        autocomplete="off"
+    >
+
+    <button
+        class="answer-button"
+        onclick="checkAnswer()">
+        Продължи →
+    </button>
+
+    <div id="error" class="error">
+        Грешен отговор. Опитай отново.
+    </div>
+
+</div>
+
+
+        <div class="footer">
+            Kari
+        </div>
+
+    </main>
+
+
+    <script>
+
+        let hintCount = 0;
+
+        /* USE HINT */
+
+        function useHint() {
+
+            hintCount++;
+
+            if (hintCount === 1) {
+
+                document.getElementById("hint1").classList.add("show");
+
+                document.getElementById("hintButton").textContent =
+                    "💡 Hint 2";
+
+            } else if (hintCount === 2) {
+
+                document.getElementById("hint2").classList.add("show");
+
+                document.getElementById("hintButton").textContent =
+                    "💡 Hints Used";
+
+                document.getElementById("hintButton").disabled = true;
+            }
+
+        }
+        function checkAnswer() {
+
+    const answer = document
+        .getElementById("answerInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    if (answer === "lelyliat") {
+
+        window.location.href = "lelyliat.html";
+
+    } else {
+
+        document
+            .getElementById("error")
+            .classList.add("show");
+
+    }
+}
+document.getElementById("answerInput").addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        checkAnswer();
+    }
+
+});
+
+    </script>
+
+</body>
+</html>
