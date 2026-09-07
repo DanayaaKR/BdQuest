@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Quest</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+
+    background: radial-gradient(
+        circle at top,
+        #21152e 0%,
+        #0b0910 45%,
+        #08070b 100%
+    );
+
+    color: white;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+}
+
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.container {
+    width: 100%;
+    max-width: 850px;
+}
+
+.card {
+    background: rgba(20, 16, 27, 0.96);
+
+    border: 1px solid #342741;
+    border-radius: 24px;
+
+    padding: 32px;
+
+    box-shadow: 0 20px 70px rgba(0,0,0,0.55);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    margin-bottom: 28px;
+}
+
+.title {
+    color: #a875ff;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.progress {
+    color: #81768b;
+
+    font-size: 14px;
+
+    margin-top: 7px;
+}
+
+
+/* =========================
+   QUESTION
+========================= */
+
+h1 {
+    font-size: 28px;
+    line-height: 1.3;
+
+    margin-bottom: 28px;
+}
+
+
+/* =========================
+   ANSWERS
+========================= */
+
+.answers {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+.answer-button {
+    min-height: 70px;
+
+    padding: 16px;
+
+    border-radius: 15px;
+
+    border: 1px solid #3d304b;
+
+    background: #0d0a12;
+
+    color: white;
+
+    font-size: 16px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.answer-button:hover {
+    background: #21182c;
+
+    border-color: #7651a8;
+
+    transform: translateY(-2px);
+}
+
+.answer-button:disabled {
+    cursor: default;
+}
+
+
+/* Correct answer */
+
+.answer-button.correct {
+    background: #173523;
+
+    border-color: #4ca86a;
+}
+
+
+/* Wrong answer */
+
+.answer-button.wrong {
+    background: #351820;
+
+    border-color: #b44d5e;
+}
+
+
+/* =========================
+   FEEDBACK
+========================= */
+
+#feedback {
+    min-height: 25px;
+
+    margin-top: 18px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    text-align: center;
+}
+
+
+/* =========================
+   NEXT BUTTON
+========================= */
+
+.next-button {
+    width: 100%;
+
+    margin-top: 18px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #8b5cf6;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: none;
+
+    transition: 0.2s;
+}
+
+.next-button:hover {
+    background: #9b70f7;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+.result {
+    text-align: center;
+
+    display: none;
+}
+
+.result h2 {
+    font-size: 32px;
+
+    margin-bottom: 12px;
+}
+
+.score {
+    color: #a875ff;
+
+    font-size: 52px;
+
+    font-weight: bold;
+
+    margin: 20px 0;
+}
+
+.result-text {
+    color: #bdb3c6;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+}
+
+.finish-button {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #8b5cf6;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.finish-button:hover {
+    background: #9b70f7;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 14px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .answers {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <!-- =========================
+             QUIZ
+        ========================== -->
+
+        <div id="quiz">
+
+            <div class="header">
+
+                <div class="title">
+                    QUICK QUIZ
+                </div>
+
+                <div class="progress" id="progress">
+                    Въпрос 1 от 10
+                </div>
+
+            </div>
+
+
+            <h1 id="question">
+                Placeholder въпрос
+            </h1>
+
+
+            <div class="answers">
+
+                <button
+                    class="answer-button"
+                    onclick="selectAnswer(0)"
+                    id="answer0">
+
+                    Placeholder отговор 1
+
+                </button>
+
+
+                <button
+                    class="answer-button"
+                    onclick="selectAnswer(1)"
+                    id="answer1">
+
+                    Placeholder отговор 2
+
+                </button>
+
+
+                <button
+                    class="answer-button"
+                    onclick="selectAnswer(2)"
+                    id="answer2">
+
+                    Placeholder отговор 3
+
+                </button>
+
+
+                <button
+                    class="answer-button"
+                    onclick="selectAnswer(3)"
+                    id="answer3">
+
+                    Placeholder отговор 4
+
+                </button>
+
+            </div>
+
+
+            <div id="feedback"></div>
+
+
+            <button
+                class="next-button"
+                id="nextButton"
+                onclick="nextQuestion()">
+
+                Следващ въпрос →
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             RESULT
+        ========================== -->
+
+        <div class="result" id="result">
+
+            <div class="title">
+                
+            </div>
+
+
+            <h2>
+                
+            </h2>
+
+
+            <div class="score" id="score">
+                0/10
+            </div>
+
+
+            <div class="result-text" id="resultText">
+                Резултат
+            </div>
+
+
+            <button
+                class="finish-button"
+                onclick="goToNextPage()">
+
+                Продължи →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+
+
+
+const questions = [
+
+    {
+        question: "Коя година се запознаваме?",
+        answers: [
+            "2010",
+            "2009",
+            "2008",
+            "2011"
+        ],
+        correct: 0
+    },
+
+
+    {
+        question: "Колко години сме били заедно в един клас?",
+        answers: [
+            "3",
+            "4",
+            "12024774",
+            "235608978875231433330897778654352"
+        ],
+        correct: 1
+    },
+
+
+    {
+        question: "А пу пу?",
+        answers: [
+            "Испанска риба",
+            "Английска риба",
+            "Френска риба",
+            "Азърбайжанска риба"
+        ],
+        correct: 2
+    },
+
+
+    {
+        question: "Колко пъти сме били заедно на море?",
+        answers: [
+            "1",
+            "2",
+            "3",
+            "4"
+        ],
+        correct: 2
+    },
+
+
+    {
+        question: "Алехандро?",
+        answers: [
+            "ѝЯАОЖГТНВМЧ",
+            "Алехандро",
+            "АААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААААА",
+            "Не"
+        ],
+        correct: 1
+    },
+
+
+    {
+        question: "Запази ли самообладание?",
+        answers: [
+            "Както винаги",
+            "Много ясно, че не ",
+            "Ен",
+            "Ад"
+        ],
+        correct: 0
+    },
+
+
+    {
+        question: "Какво беше това лято?",
+        answers: [
+            "Незабравимо",
+            "Неповторимо",
+            "Неразбираемо",
+            "Не"
+        ],
+        correct: 0
+    },
+
+
+    {
+        question: "Къде ще бидем догодина?",
+        answers: [
+            "Испания",
+            "Несебър",
+            "Турция",
+            "И на трите места😝"
+        ],
+        correct: 3
+    },
+
+
+    {
+        question: "Колко пъти ще ходиш на фистес с мен тази година?",
+        answers: [
+            "37",
+            "0",
+            "356",
+            "Няма да излизам от фитнеса "
+        ],
+        correct: 3
+    },
+
+
+    {
+        question: "Кой има рожден ден днес?",
+        answers: [
+            "Дани",
+            "Кари",
+            "Кралица Елизабет Първа",
+            "Никой"
+            
+        ],
+        correct: 2
+    }
+
+];
+
+
+/* =====================================================
+   СЛЕДВАЩА СТРАНИЦА
+===================================================== */
+
+const NEXT_URL = "posledno.html";
+
+
+/* =====================================================
+   QUIZ LOGIC
+===================================================== */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let answered = false;
+
+
+/* Зареждане на въпроса */
+
+function loadQuestion() {
+
+    answered = false;
+
+
+    const current =
+        questions[currentQuestion];
+
+
+    document.getElementById("question").textContent =
+        current.question;
+
+
+    document.getElementById("progress").textContent =
+        "Въпрос " +
+        (currentQuestion + 1) +
+        " от " +
+        questions.length;
+
+
+    document.getElementById("feedback").textContent =
+        "";
+
+
+    document.getElementById("nextButton").style.display =
+        "none";
+
+
+    for (let i = 0; i < 4; i++) {
+
+        const button =
+            document.getElementById("answer" + i);
+
+
+        button.textContent =
+            current.answers[i];
+
+
+        button.disabled = false;
+
+
+        button.classList.remove("correct");
+
+        button.classList.remove("wrong");
+
+    }
+
+}
+
+
+/* =====================================================
+   ИЗБОР НА ОТГОВОР
+===================================================== */
+
+function selectAnswer(index) {
+
+    if (answered) return;
+
+
+    answered = true;
+
+
+    const current =
+        questions[currentQuestion];
+
+
+    const buttons = [
+
+        document.getElementById("answer0"),
+
+        document.getElementById("answer1"),
+
+        document.getElementById("answer2"),
+
+        document.getElementById("answer3")
+
+    ];
+
+
+    buttons.forEach(button => {
+
+        button.disabled = true;
+
+    });
+
+
+    /* ПРАВИЛЕН */
+
+    if (index === current.correct) {
+
+        score++;
+
+
+        buttons[index].classList.add("correct");
+
+
+        document.getElementById("feedback").style.color =
+            "#62d58a";
+
+
+        document.getElementById("feedback").textContent =
+            "✓ Правилен отговор!";
+
+    }
+
+
+    /* ГРЕШЕН */
+
+    else {
+
+        buttons[index].classList.add("wrong");
+
+
+        buttons[current.correct].classList.add("correct");
+
+
+        document.getElementById("feedback").style.color =
+            "#e36d7c";
+
+
+        document.getElementById("feedback").textContent =
+            "✗ Грешен отговор.";
+
+    }
+
+
+    /* Покажи Next */
+
+    const nextButton =
+        document.getElementById("nextButton");
+
+
+    nextButton.style.display =
+        "block";
+
+
+    if (currentQuestion === questions.length - 1) {
+
+        nextButton.textContent =
+            "Виж резултата →";
+
+    } else {
+
+        nextButton.textContent =
+            "Следващ въпрос →";
+
+    }
+
+}
+
+
+/* =====================================================
+   СЛЕДВАЩ ВЪПРОС
+===================================================== */
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+
+    if (currentQuestion >= questions.length) {
+
+        showResult();
+
+        return;
+
+    }
+
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   РЕЗУЛТАТ
+===================================================== */
+
+function showResult() {
+
+    document.getElementById("quiz").style.display =
+        "none";
+
+
+    document.getElementById("result").style.display =
+        "block";
+
+
+    document.getElementById("score").textContent =
+        score + "/" + questions.length;
+
+
+    let resultText;
+
+
+    if (score === 10) {
+
+        resultText =
+            " Браво";
+
+    }
+
+    else if (score >= 8) {
+
+        resultText =
+            "Добре ig";
+
+    }
+
+    else if (score >= 5) {
+
+        resultText =
+            "Доста зле";
+
+    }
+
+    else {
+
+        resultText =
+            "Братото сама не се познава😭";
+
+    }
+
+
+    document.getElementById("resultText").textContent =
+        resultText;
+
+}
+
+
+/* =====================================================
+   СЛЕДВАЩА СТРАНИЦА
+===================================================== */
+
+function goToNextPage() {
+
+    window.location.href =
+        NEXT_URL;
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener("load", function() {
+
+    loadQuestion();
+
+});
+
+
+</script>
+
+</body>
+</html>

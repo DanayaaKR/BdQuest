@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>02 / Mathematics</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0b0b0f;
+            color: #eeeeee;
+            font-family: Arial, sans-serif;
+            padding: 30px 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: #777780;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .number {
+            color: #a970ff;
+        }
+
+        .timer-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #111116;
+            border: 1px solid #292933;
+            border-radius: 12px;
+            padding: 10px 15px;
+            text-align: right;
+            z-index: 100;
+        }
+
+        .timer-label {
+            font-size: 9px;
+            color: #666670;
+            letter-spacing: 1.5px;
+            margin-bottom: 3px;
+        }
+
+        #timer {
+            font-family: monospace;
+            font-size: 17px;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #111116;
+            border: 1px solid #292933;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: #666670;
+        }
+
+        .video-placeholder .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .video-placeholder p {
+            margin: 5px 0;
+        }
+
+        .video-placeholder .small {
+            font-size: 11px;
+            color: #45454f;
+        }
+
+        .card {
+            background: #111116;
+            border: 1px solid #24242c;
+            border-radius: 18px;
+            padding: 45px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .label {
+            color: #a970ff;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 0 0 35px;
+            font-size: 30px;
+        }
+
+        .problem {
+            background: #0c0c10;
+            border: 1px solid #292933;
+            border-radius: 14px;
+            padding: 30px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .problem-title {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .equation {
+            margin: 20px 0;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        /* ANSWER */
+
+        .answer-section {
+            margin-top: 40px;
+        }
+
+        .answer-label {
+            display: block;
+            color: #9999a3;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        /* DISCLAIMER */
+
+        .answer-disclaimer {
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            background: rgba(169, 112, 255, 0.08);
+            border-left: 3px solid #a970ff;
+            border-radius: 8px;
+            color: #888893;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .answer-disclaimer strong {
+            color: #b794ff;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0b0b0f;
+            border: 1px solid #35353f;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .answer-input:focus {
+            border-color: #a970ff;
+        }
+
+        .submit-button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #a970ff;
+            color: #0b0b0f;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(169, 112, 255, 0.2);
+        }
+
+        #result {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .wrong {
+            display: block !important;
+            background: #241416;
+            border: 1px solid #4b2529;
+            color: #e58b91;
+        }
+
+        .correct {
+            display: block !important;
+            background: #142417;
+            border: 1px solid #294b2d;
+            color: #91d99a;
+        }
+
+        .next-button {
+            display: none;
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #a970ff;
+            border-radius: 10px;
+            background: transparent;
+            color: #a970ff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .next-button:hover {
+            background: #a970ff;
+            color: #0b0b0f;
+        }
+
+        /* HINT */
+
+        .hint-area {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .hint-button {
+            background: transparent;
+            border: 1px solid #8b5cf6;
+            color: #b794ff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .hint-button:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .hint-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hint {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #ddd;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .hint.show {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #3f3f48;
+            font-size: 11px;
+        }
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 28px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .problem {
+                padding: 22px;
+                font-size: 16px;
+            }
+
+            .timer-box {
+                position: static;
+                width: fit-content;
+                margin-left: auto;
+                margin-bottom: 20px;
+            }
+
+            .problem-image-placeholder {
+                width: 100%;
+                min-height: 350px;
+                border: 2px dashed #35353f;
+                border-radius: 14px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                color: #666670;
+                background: #0b0b0f;
+            }
+
+            .placeholder-icon {
+                font-size: 45px;
+                margin-bottom: 15px;
+            }
+
+            .problem-image-placeholder p {
+                margin: 5px 0;
+            }
+
+            .placeholder-small {
+                font-size: 11px;
+                color: #45454f;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <main class="page">
+
+        <div class="topbar">
+
+            <span class="number"></span>
+
+            <span>
+                Математика
+            </span>
+
+        </div>
+
+        <section class="card">
+
+            <div class="label"></div>
+
+            <h1></h1>
+
+            <div class="problem">
+
+                <div class="problem-image-placeholder">
+
+                    <p class="placeholder-small">
+                        <img src="problem.png"/>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- ANSWER -->
+
+            <div class="answer-section">
+
+                <label class="answer-label">
+                    Въведи отговор
+                </label>
+
+                <div class="answer-disclaimer">
+                    <strong>Как да напишеш отговора:</strong><br>
+                    Напиши и трите отговора в един ред, разделени с <strong>;</strong>.
+                    За координатите използвай скоби, например:
+                    <strong>x = 1, x = 1; (1; 1) и (1; 1); 1m</strong>
+                </div>
+
+                <input
+                    id="answer"
+                    class="answer-input"
+                    type="text"
+                    placeholder="Въведи трите отговора..."
+                    autocomplete="off"
+                >
+
+                <button
+                    class="submit-button"
+                    onclick="checkAnswer()">
+
+                    Предай
+
+                </button>
+
+                <div id="result"></div>
+
+                <button
+                    id="nextButton"
+                    class="next-button"
+                    onclick="goNext()">
+
+                    Продължи
+
+                </button>
+
+            </div>
+
+            <!-- HINT -->
+
+            <div class="hint-area">
+
+                <button
+                    id="hintButton"
+                    class="hint-button"
+                    onclick="useHint()">
+
+                    HINT
+
+                </button>
+
+                <div id="hint" class="hint">
+                    Трябва ти подсказка, сериозно?
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="footer">
+            Kari
+        </div>
+
+    </main>
+
+    <script>
+
+        const CORRECT_ANSWER = "x = 0, x = 4; (2; 1) и (4; 5); 100m";
+        const CORRECT_ANSWER2 = "x1 = 0, x2 = 4; (2; 1) и (4; 5); 100m";
+        const CORRECT_ANSWER3 = "x1 = 4, x2 = 0; (2; 1) и (4; 5); 100m";
+        const CORRECT_ANSWER4 = "x = 4, x = 0; (2; 1) и (4; 5); 100m";
+        const CORRECT_ANSWER5 = "x = 0, x = 4; (4; 5) и (2; 1); 100m";
+        const CORRECT_ANSWER6 = "x1 = 0, x2 = 4; (4; 5) и (2; 1); 100m";
+        const CORRECT_ANSWER7 = "x1 = 4, x2 = 0; (4; 5) и (2; 1); 100m";
+        const CORRECT_ANSWER8 = "x = 4, x = 0; (4; 5) и (2; 1); 100m";
+
+
+        
+function checkAnswer() {
+
+    const input = document.getElementById("answer");
+    const result = document.getElementById("result");
+    const nextButton = document.getElementById("nextButton");
+
+    // Премахваме всички интервали от отговора
+    const userAnswer = input.value.trim().replace(/\s+/g, "");
+
+    const correctAnswers = [
+        CORRECT_ANSWER,
+        CORRECT_ANSWER2,
+        CORRECT_ANSWER3,
+        CORRECT_ANSWER4,
+        CORRECT_ANSWER5,
+        CORRECT_ANSWER6,
+        CORRECT_ANSWER7,
+        CORRECT_ANSWER8
+    ];
+
+    // Сравняваме отговорите без интервали
+    const isCorrect = correctAnswers.some(answer =>
+        userAnswer === answer.replace(/\s+/g, "")
+    );
+
+    if (isCorrect) {
+
+        result.textContent = "СМГ ще се гордее";
+        result.className = "correct";
+
+        nextButton.style.display = "block";
+
+    } else {
+
+        result.textContent = "Грешно, пъпеш";
+        result.className = "wrong";
+
+        nextButton.style.display = "none";
+    }
+}
+
+
+        function useHint() {
+
+            const hint = document.getElementById("hint");
+            const hintButton = document.getElementById("hintButton");
+
+            hint.classList.add("show");
+
+            hintButton.textContent = "💡 HINT USED";
+            hintButton.disabled = true;
+        }
+
+
+        function goNext() {
+
+            window.location.href = "page3.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

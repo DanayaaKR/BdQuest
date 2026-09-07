@@ -1,0 +1,885 @@
+
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Binary Puzzle</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #21152e 0%,
+                    #0b0910 45%,
+                    #08070b 100%
+                );
+
+            color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 25px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+
+            background: rgba(20, 16, 27, 0.96);
+
+            border: 1px solid #342741;
+
+            border-radius: 24px;
+
+            padding: 32px;
+
+            box-shadow:
+                0 20px 70px rgba(0, 0, 0, 0.55);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 28px;
+        }
+
+        .title {
+
+            color: #a875ff;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+        /* =========================
+           TIMER
+        ========================= */
+
+        .timer {
+    position: fixed;
+
+    top: 20px;
+    right: 20px;
+
+    background: #111116;
+
+    border: 1px solid #292933;
+
+    border-radius: 12px;
+
+    padding: 10px 15px;
+
+    text-align: right;
+
+    z-index: 100;
+
+    min-width: 105px;
+}
+
+.timer-label {
+    font-size: 9px;
+
+    color: #666670;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 3px;
+}
+
+#timer {
+    font-family: monospace;
+
+    font-size: 17px;
+
+    color: #eeeeee;
+}
+        .binary {
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            color: #bd91ff;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            word-break: break-all;
+
+            user-select: text;
+        }
+
+        /* =========================
+           ANSWER
+        ========================= */
+
+        .answer-label {
+
+            color: #bdb3c6;
+
+            font-size: 15px;
+
+            margin-bottom: 10px;
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 15px 16px;
+
+            border-radius: 13px;
+
+            border: 1px solid #3d304b;
+
+            background: #0d0a12;
+
+            color: white;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        input:focus {
+
+            border-color: #9865ed;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(152, 101, 237, 0.12);
+        }
+
+        /* =========================
+           CHECK BUTTON
+        ========================= */
+
+        .check-button {
+
+            width: 100%;
+
+            margin-top: 11px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .check-button:hover {
+
+            background: #9b70f7;
+
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           FEEDBACK
+        ========================= */
+
+        #feedback {
+
+            min-height: 23px;
+
+            margin-top: 13px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+        /* =========================
+           HINTS
+        ========================= */
+
+        .hints {
+
+            margin-top: 23px;
+
+            padding-top: 21px;
+
+            border-top: 1px solid #2e2537;
+
+            text-align: center;
+        }
+
+        .hint-button {
+
+            background: transparent;
+
+            border: 1px solid #4b3a5d;
+
+            color: #b98cff;
+
+            padding: 10px 18px;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .hint-button:hover {
+
+            background: #21182c;
+        }
+
+        .hint-button:disabled {
+
+            opacity: 0.5;
+
+            cursor: default;
+        }
+
+        .hint {
+
+            display: none;
+
+            margin-top: 12px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background: #1c1623;
+
+            border: 1px solid #342a40;
+
+            color: #c4bbc9;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            text-align: left;
+        }
+
+        /* =========================
+           THIRD HINT IMAGE
+        ========================= */
+
+        .hint-image {
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            border-radius: 12px;
+
+            display: none;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .header {
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .binary {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <div class="card">
+
+
+        <!-- =========================
+             HEADER
+        ========================= -->
+
+        <div class="header">
+
+            <div class="title">
+                Kari
+            </div>
+
+            <div class="timer">
+
+    
+
+</div>
+
+        </div>
+
+
+        <h1>
+            Разчети съобщението
+        </h1>
+
+
+        <!-- =========================
+             BINARY MESSAGE
+        ========================= -->
+
+        <div class="binary-box">
+
+            <div
+                class="binary"
+                id="binaryMessage"
+            ></div>
+
+        </div>
+
+
+        <!-- =========================
+             ANSWER
+        ========================= -->
+
+        <div class="answer-label">
+            Въведи отговора си:
+        </div>
+
+        <input
+            type="text"
+            id="answer"
+            placeholder="Напиши отговора..."
+            autocomplete="off"
+        >
+
+
+        <button
+            class="check-button"
+            onclick="checkAnswer()"
+        >
+            Провери отговора
+        </button>
+
+
+        <div id="feedback"></div>
+
+
+        <!-- =========================
+             HINTS
+        ========================= -->
+
+        <div class="hints">
+
+            <button
+                class="hint-button"
+                id="hintButton"
+                onclick="showNextHint()"
+            >
+                HINT
+            </button>
+
+
+            <!-- HINT 1 -->
+
+            <div
+                class="hint"
+                id="hint1"
+            >
+
+                <strong>Подсказка 1:</strong><br>
+
+                Това е бинарен код. Ще поличиш въпрос на който ти трябва да отговориш. Това може да помогне https://www.rapidtables.com/convert/number/binary-to-ascii.html
+
+            </div>
+
+
+            <!-- HINT 2 -->
+
+            
+
+
+            <!-- HINT 3 -->
+
+            <div
+                class="hint"
+                id="hint2"
+            >
+
+                <strong>Подсказка 3:</strong><br>
+
+                
+
+                    <img
+                        src="nosove.jpg"
+                        
+                    >
+                
+
+                <div
+                    style="
+                        margin-top: 10px;
+                        padding: 35px 15px;
+                        border: 2px dashed #4b3a5d;
+                        border-radius: 12px;
+                        text-align: center;
+                        color: #80758c;
+                    "
+                >
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+    const TOTAL_TIME = 12 * 60 * 60 * 1000;
+const HINT_COST = 30 * 60 * 1000;
+const MAX_HINTS = 12;
+
+let timerInterval;
+
+/* =====================================
+   BINARY MESSAGE
+===================================== */
+
+const message =
+    "Какъв цвят е блузата ти на снимката с носовете?";
+
+
+/*
+    Автоматично превръщаме текста
+    в UTF-8 binary.
+
+    Така няма риск да има грешни
+    бинарни стойности.
+*/
+
+function textToBinary(text) {
+
+    const bytes =
+        new TextEncoder().encode(text);
+
+    return Array.from(bytes)
+
+        .map(byte =>
+            byte
+                .toString(2)
+                .padStart(8, "0")
+        )
+
+        .join(" ");
+}
+
+
+document.getElementById("binaryMessage")
+    .textContent = textToBinary(message);
+
+
+/* =====================================
+   CORRECT ANSWER
+===================================== */
+
+const correctAnswer = "лилава";
+
+
+/* =====================================
+   NEXT PAGE
+===================================== */
+
+const nextURL = "page4.html";
+
+
+/* =====================================
+   TIMER
+===================================== */
+
+function updateTimer() {
+
+    const startTime = Number(
+        localStorage.getItem("questStart")
+    );
+
+    const hintCount = Number(
+        localStorage.getItem("hintCount") || 0
+    );
+
+    const elapsed =
+        Date.now() - startTime;
+
+    const remaining =
+        TOTAL_TIME -
+        elapsed -
+        (hintCount * HINT_COST);
+
+
+    if (remaining <= 0) {
+
+        document.getElementById("timer").textContent =
+            "00:00:00";
+
+        clearInterval(timerInterval);
+
+        document.getElementById("hintButton").disabled = true;
+
+        return;
+    }
+
+
+    const hours = Math.floor(
+        remaining / (1000 * 60 * 60)
+    );
+
+    const minutes = Math.floor(
+        (remaining % (1000 * 60 * 60)) /
+        (1000 * 60)
+    );
+
+    const seconds = Math.floor(
+        (remaining % (1000 * 60)) /
+        1000
+    );
+
+
+    document.getElementById("timer").textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+
+
+    /* Timer gets scarier */
+
+    const timer =
+        document.getElementById("timer");
+
+
+    if (remaining <= 60 * 60 * 1000) {
+
+        timer.style.color = "#ff6b6b";
+
+    }
+
+    else if (remaining <= 3 * 60 * 60 * 1000) {
+
+        timer.style.color = "#e5c76b";
+
+    }
+
+    else {
+
+        timer.style.color = "#eeeeee";
+
+    }
+}
+
+
+        /* USE HINT */
+
+        function useHint() {
+
+            let hintCount = Number(
+                localStorage.getItem("hintCount") || 0
+            );
+
+
+            if (hintCount >= MAX_HINTS) {
+
+                alert(
+                    "You've used all 12 hints. Humanity has failed."
+                );
+
+                return;
+            }
+
+
+            const confirmed = confirm(
+                "Using this hint will cost you 30 minutes.\n\n" +
+                "You have used " +
+                hintCount +
+                " / 12 hints.\n\n" +
+                "Use the hint?"
+            );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            hintCount++;
+
+            localStorage.setItem(
+                "hintCount",
+                hintCount
+            );
+
+
+            document.getElementById("hint").classList.add("show");
+
+            document.getElementById("hintButton").textContent =
+                "💡 Hint Used (" +
+                hintCount +
+                "/12)";
+
+            updateTimer();
+        }
+
+
+        /* RESTORE STATE AFTER REFRESH */
+
+        window.addEventListener("load", function () {
+
+            const startTime =
+                localStorage.getItem("questStart");
+
+
+            if (startTime) {
+
+                document.getElementById("startScreen").style.display =
+                    "none";
+
+                updateTimer();
+
+                timerInterval = setInterval(
+                    updateTimer,
+                    1000
+                );
+
+
+                const hintCount = Number(
+                    localStorage.getItem("hintCount") || 0
+                );
+
+
+                if (hintCount > 0) {
+
+                    document.getElementById("hint").classList.add("show");
+
+                    document.getElementById("hintButton").textContent =
+                        "💡 Hint Used (" +
+                        hintCount +
+                        "/12)";
+                }
+
+            }
+
+        });
+
+
+/* =====================================
+   CHECK ANSWER
+===================================== */
+
+function checkAnswer() {
+
+    const input =
+        document.getElementById("answer");
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    const answer =
+        input.value
+            .trim()
+            .toLowerCase();
+
+
+    if (answer === "") {
+
+        feedback.style.color = "#d7a84f";
+
+        feedback.textContent =
+            "Моля, въведи отговор.";
+
+        return;
+    }
+
+
+    if (answer === correctAnswer) {
+
+        feedback.style.color = "#62d58a";
+
+        feedback.textContent =
+            "✓ Правилен отговор!";
+
+
+        input.disabled = true;
+
+        document.querySelector(".check-button")
+            .disabled = true;
+
+
+        clearInterval(timerInterval);
+
+
+        setTimeout(() => {
+
+            window.location.href =
+                nextURL;
+
+        }, 1200);
+
+    }
+
+    else {
+
+        feedback.style.color = "#e36d7c";
+
+        feedback.textContent =
+            "✗ Грешен отговор. Опитай отново.";
+
+        input.select();
+
+    }
+
+}
+
+
+/* =====================================
+   HINT SYSTEM
+===================================== */
+
+let currentHint = 0;
+
+
+function showNextHint() {
+
+    currentHint++;
+
+
+    const hint =
+        document.getElementById(
+            "hint" + currentHint
+        );
+
+
+    if (!hint) {
+
+        return;
+
+    }
+
+
+    hint.style.display = "block";
+
+
+    if (currentHint >= 3) {
+
+        const button =
+            document.getElementById("hintButton");
+
+
+        button.textContent =
+            "💡 Всички подсказки са показани";
+
+
+        button.disabled = true;
+
+    }
+
+}
+
+
+/* =====================================
+   ENTER KEY
+===================================== */
+
+document.getElementById("answer")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                checkAnswer();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
